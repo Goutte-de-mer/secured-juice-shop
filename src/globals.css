@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Moirai+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-lemon: #fff98e;
+  --color-green: #d6ee74;
+  --color-grapefruit: #ff7878;
+  --color-orange: #fecf3b;
+  --color-black: #515151;
+
+  /* FONTS */
+  --font-body: "Montserrat", sans-serif;
+  --font-title: "Moirai One", sans-serif;
+  --font-title-bis: "Bagel Fat One", sans-serif;
+}
+
+body {
+  @apply font-body text-black;
+}
+
+.formInputContainer {
+  @apply flex flex-col-reverse gap-2;
+}
+
+.formInput {
+  @apply focus-visible:border-lemon border-b-2 border-neutral-200 px-1 transition focus-visible:outline-0;
+}
+
+.label {
+  @apply peer-focus:text-grapefruit text-sm text-neutral-300 transition;
+}
+
+button {
+  @apply cursor-pointer;
+}
