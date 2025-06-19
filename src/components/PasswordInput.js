@@ -1,8 +1,11 @@
 "use client";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const PasswordInput = () => {
   const [password, setPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const validateLength = (password) =>
     password.length >= 8 && password.length <= 32;
@@ -29,19 +32,27 @@ const PasswordInput = () => {
 
   return (
     <>
-      <div className="formInputContainer">
-        <input
-          id="password"
-          name="password"
-          type="password"
-          value={password}
-          onChange={handlePasswordChange}
-          className="peer formInput"
-          required
+      <div className="grid grid-cols-[1fr_auto] items-center gap-x-4">
+        <div className="formInputContainer">
+          <input
+            id="password"
+            name="password"
+            type={isPasswordVisible ? "text" : "password"}
+            value={password}
+            onChange={handlePasswordChange}
+            className="peer formInput"
+            required
+          />
+          <label htmlFor="password" className="label">
+            Mot de passe
+          </label>
+        </div>
+        <FontAwesomeIcon
+          icon={isPasswordVisible ? faEye : faEyeSlash}
+          size="lg"
+          className="cursor-pointer transition hover:text-gray-400 active:scale-95"
+          onClick={() => setIsPasswordVisible((prev) => !prev)}
         />
-        <label htmlFor="password" className="label">
-          Mot de passe
-        </label>
       </div>
       <ul className="grid list-disc grid-cols-2 gap-2 text-xs/6 text-gray-400">
         <li className={getRuleClass(validations.length)}>

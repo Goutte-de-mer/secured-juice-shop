@@ -1,9 +1,11 @@
 "use client";
 import PasswordInput from "./PasswordInput";
 import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 const RegisterForm = ({ formAction }) => {
   const { data: session } = useSession();
+  const pathname = usePathname();
   return (
     <form
       action={formAction}
@@ -36,7 +38,7 @@ const RegisterForm = ({ formAction }) => {
         </div>
       </div>
 
-      {session?.user?.role === "ADMIN" ? (
+      {session?.user?.role === "ADMIN" && pathname === "/admin/add-user" ? (
         <div className="grid grid-cols-2 gap-x-12">
           <div className="formInputContainer">
             <input
