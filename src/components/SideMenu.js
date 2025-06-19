@@ -3,9 +3,13 @@
 import { useState } from "react";
 import { Dialog, DialogPanel, DialogBackdrop } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faTimes,
+  faArrowRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 
 export default function SideMenu() {
   const { data: session } = useSession();
@@ -64,6 +68,17 @@ export default function SideMenu() {
                     </Link>
                   </li>
 
+                  {session && (
+                    <li>
+                      <Link
+                        href={"/profile"}
+                        className="block rounded p-2 hover:bg-amber-50"
+                      >
+                        Profil
+                      </Link>
+                    </li>
+                  )}
+
                   <li>
                     <Link
                       href="#"
@@ -76,6 +91,14 @@ export default function SideMenu() {
                     <>
                       <li>
                         <Link
+                          href={"/admin/users"}
+                          className="block rounded p-2 hover:bg-amber-50"
+                        >
+                          Gestion du site
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
                           href={"/add-product"}
                           className="block rounded p-2 hover:bg-amber-50"
                         >
@@ -84,10 +107,18 @@ export default function SideMenu() {
                       </li>
                       <li>
                         <Link
-                          href={"/add-user"}
+                          href={"/register"}
                           className="block rounded p-2 hover:bg-amber-50"
                         >
                           Ajouter un utilisateur
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href={"/users"}
+                          className="block rounded p-2 hover:bg-amber-50"
+                        >
+                          Liste des utilisateurs
                         </Link>
                       </li>
                     </>
@@ -96,13 +127,36 @@ export default function SideMenu() {
               </nav>
 
               {/* Pied de page du menu */}
-              <div className="border-t border-gray-200 pt-6">
-                <button
+              <div className="space-y-3.5 border-t border-gray-200 pt-6">
+                {/* <button
                   onClick={() => setIsOpen(false)}
                   className="w-full rounded bg-gray-100 px-4 py-2 hover:bg-gray-200"
                 >
                   Fermer
-                </button>
+                </button> */}
+                {session ? (
+                  <button
+                    className="w-full rounded bg-gray-100 px-4 py-2 transition hover:bg-gray-200 active:scale-95"
+                    onClick={() => signOut()}
+                  >
+                    <FontAwesomeIcon
+                      icon={faArrowRightFromBracket}
+                      className="w-5"
+                    />
+                    <span className="ml-5">Déconnexion</span>
+                  </button>
+                ) : (
+                  <button
+                    className="w-full rounded bg-gray-100 px-4 py-2 transition hover:bg-gray-200 active:scale-95"
+                    onClick={() => signIn()}
+                  >
+                    <FontAwesomeIcon
+                      icon={faArrowRightFromBracket}
+                      className="w-5"
+                    />
+                    <span className="ml-5">Connexion</span>
+                  </button>
+                )}
               </div>
             </div>
           </DialogPanel>

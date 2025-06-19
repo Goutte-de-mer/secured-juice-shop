@@ -13,7 +13,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 const ProfileBtn = () => {
   const { data: session } = useSession();
   return (
-    <>
+    <div className="flex items-center gap-x-2">
       <Popover className={"relative"}>
         <PopoverButton
           className={
@@ -74,7 +74,7 @@ const ProfileBtn = () => {
           <span className="font-bold">{session.user.name}</span>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

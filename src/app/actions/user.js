@@ -35,7 +35,7 @@ export async function updateUser(field, value) {
     const existingUser = await prisma.user.findFirst({
       where: {
         email: value,
-        id: { not: session.user.id },
+        id: parseInt(session.user.id),
       },
     });
 
@@ -51,4 +51,24 @@ export async function updateUser(field, value) {
   });
 
   return { success: true, message: "Profil mis à jour avec succès" };
+}
+
+export async function showUsers() {
+  const session = await auth();
+
+  if (!session || session.user.role !== "ADMIN") {
+    return { error: "Accès non autorisé" };
+  }
+
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      lastName: true,
+      email: true,
+      role: true,
+    },
+    orderBy: [{ role: "asc" }, { name: "asc" }],
+  });
+  return { users };
 }
