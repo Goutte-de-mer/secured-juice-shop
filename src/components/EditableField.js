@@ -33,6 +33,7 @@ const EditableField = ({ label, value, onSave, type = "text" }) => {
             type={type}
             value={currentValue}
             onChange={(e) => setCurrentValue(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSave()}
             className="w-full text-gray-500 outline-0"
             autoFocus
           />
