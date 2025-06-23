@@ -2,15 +2,27 @@
 import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTimes,
+  faShoppingCart,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "@/context/CartContext";
+import { useSession } from "next-auth/react";
+import { deleteProduct } from "@/app/actions/product";
 
 const Product = ({ product }) => {
+  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const { addToCart } = useCart();
 
   const handleAddToCart = (quantity = 1) => {
     addToCart(product, quantity);
+  };
+
+  const handleDeleteProduct = async () => {
+    const response = await deleteProduct(product.id);
+    if (response.success) setIsOpen(false);
   };
 
   return (
@@ -36,9 +48,9 @@ const Product = ({ product }) => {
         onClose={() => setIsOpen(false)}
         className="relative z-50"
       >
-        <div className="fixed inset-0 bg-black/30" />
+        <div className="fixed inset-0 bg-black/50" />
 
-        <div className="fixed inset-0 flex items-center justify-center p-4">
+        <div className="fixed inset-0 flex items-start justify-center overflow-y-auto p-4">
           <DialogPanel
             transition
             className="relative max-w-md rounded-lg bg-white p-6 pt-11 duration-200 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
@@ -70,6 +82,15 @@ const Product = ({ product }) => {
               <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
               Ajouter au panier
             </button>
+            {session?.user.role === "ADMIN" && (
+              <button
+                className="hover:bg-grapefruit mt-4 w-full rounded-md bg-red-400 px-4 py-2 text-white transition active:scale-95"
+                onClick={handleDeleteProduct}
+              >
+                <FontAwesomeIcon icon={faTrash} className="mr-2" />
+                Supprimer le produit
+              </button>
+            )}
           </DialogPanel>
         </div>
       </Dialog>

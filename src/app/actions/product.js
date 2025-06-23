@@ -45,3 +45,19 @@ export async function addProduct(prevState, formData) {
     };
   }
 }
+
+export async function deleteProduct(id) {
+  const session = await auth();
+  if (!session) {
+    return { error: "Not allowed" };
+  }
+  try {
+    await prisma.product.delete({
+      where: { id: id },
+    });
+    return { success: "Produit supprimé" };
+  } catch (error) {
+    console.log(error);
+    return { error: "Un problème est surnvenu" };
+  }
+}

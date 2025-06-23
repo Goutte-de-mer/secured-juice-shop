@@ -7,6 +7,7 @@ import {
   faUsers,
   faUserPlus,
   faLemon,
+  faReceipt,
 } from "@fortawesome/free-solid-svg-icons";
 import { signOut } from "next-auth/react";
 
@@ -43,6 +44,16 @@ const AdminMenu = () => {
             <FontAwesomeIcon icon={faLemon} className="w-5" />
 
             <span className="ml-5">Ajouter un produit</span>
+          </Link>
+        </li>
+        <li>
+          <Link
+            href={"/admin/orders"}
+            className={`hover:text-grapefruit transition ${pathname === "/admin/orders" ? "text-grapefruit" : "text-black"}`}
+          >
+            <FontAwesomeIcon icon={faReceipt} className="w-5" />
+
+            <span className="ml-5">Commandes</span>
           </Link>
         </li>
         <li>
