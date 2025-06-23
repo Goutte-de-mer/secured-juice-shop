@@ -53,6 +53,46 @@ L'utilisation des Server Actions Next.js au lieu d'une API REST classique apport
 
 ## Preuves de sécurisation
 
+### Authentification - Mesures de Sécurité
+
+- **Validation** : Schémas Zod sur toutes les entrées utilisateur
+
+  ```js
+  const { email, password } = await signInSchema.parseAsync(credentials);
+  ```
+
+- **Gestion d'erreurs** : Messages uniformes sans révéler d'infos
+
+  ```js
+  class InvalidLoginError extends CredentialsSignin {
+    code = "invalid_credentials";
+    message = "Email ou mot de passe non valide";
+  }
+  ```
+
+- **Sessions JWT** : Données utilisateur sécurisées dans le token
+
+  ```js
+  async jwt({ token, user }) {
+    if (user) {
+      token.id = user.id;
+      token.role = user.role;
+    }
+    return token;
+  }
+  ```
+
+- **Protection** : Exclusion du mot de passe des données retournées
+  ```js
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    // password exclu volontairement
+  };
+  ```
+
 ### Hashage sécurisé des mots de passe
 
 ```javascript
@@ -154,16 +194,18 @@ npm run dev
 
 Pour accéder aux fonctionnalités d'administration :
 
-1. **Créez un compte utilisateur normal** via l'interface d'inscription
+### Pour le premier compte administrateur
+
+1. **Créer un compte utilisateur normal** via l'interface d'inscription
 2. **Ouvrir Prisma Studio** :
    ```bash
    npx prisma studio
    ```
 3. **Naviguer vers la table `User`**
 4. **Modifier le champ `role`** de l'utilisateur de `USER` à `ADMIN`
-5. **Sauvegardez** et reconnectez-vous
+5. **Sauvegarder** et se reconnecter
 
-Vous aurez maintenant accès aux fonctionnalités d'administration comme l'ajout de produits.
+Vous aurez maintenant accès aux fonctionnalités d'administration comme l'ajout de produits, l'ajout de compte utilisateur ou administrateur, etc.
 
 ## Variables d'environnement
 
